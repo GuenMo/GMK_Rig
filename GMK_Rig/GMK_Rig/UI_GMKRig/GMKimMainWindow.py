@@ -1,11 +1,18 @@
 # -*- coding: utf-8 -*-
 
+try:
+    from PySide.QtGui import *
+    from PySide.QtCore import *
+    from shiboken import wrapInstance
+except:
+    from PySide2.QtGui import *
+    from PySide2.QtCore import *
+    from PySide2.QtWidgets import *
+    from shiboken2 import wrapInstance
+
 import maya.OpenMayaUI as OpenMayaUI
-from shiboken import wrapInstance
-from PySide import QtGui
 import pymel.core as pm
 
-import stylesheet
 
 import GMKimTabWidget as GMKimTabWidget
 reload(GMKimTabWidget)
@@ -14,19 +21,18 @@ reload(GMKimTabWidget)
 
 def getMayaWindow():
     ptr = OpenMayaUI.MQtUtil.mainWindow()
-    return wrapInstance(long(ptr), QtGui.QMainWindow)
+    return wrapInstance(long(ptr), QMainWindow)
 
-class GMKimMainWindow(QtGui.QMainWindow):
+class GMKimMainWindow(QMainWindow):
     def __init__(self, parent=getMayaWindow()):
         super(GMKimMainWindow, self).__init__(parent)
-        self.stylData  = stylesheet.darkorange
         self.initUI()
         
     def initUI(self):
         # Create Widget
-        self.centralwidget = QtGui.QWidget()
+        self.centralwidget = QWidget()
         self.setCentralWidget(self.centralwidget)
-        self.main_Layout = QtGui.QVBoxLayout()
+        self.main_Layout = QVBoxLayout()
         self.mainTab = GMKimTabWidget.GMKimTabWidget()
             
         # Set Layout
@@ -38,7 +44,7 @@ class GMKimMainWindow(QtGui.QMainWindow):
         self.setWindowTitle("GMKim Rig")
         self.main_Layout.setContentsMargins(0, 0, 0, 0)
         self.setGeometry(300, 300, 250, 150)
-        self.setStyleSheet(self.stylData)
+
         
 def MainUI():
     global win

@@ -1,6 +1,13 @@
 # -*- coding: utf-8 -*-
 
-from PySide import QtGui
+try:
+    from PySide.QtGui import *
+    from PySide.QtCore import *
+except:
+    from PySide2.QtGui import *
+    from PySide2.QtCore import *
+    from PySide2.QtWidgets import *
+    
 import GMKimBodyWidget as GMKimBodyWidget
 import GMKimFaceWidget as GMKimFaceWidget
 import GMKimMenuWidget as GMKimMenuWidget
@@ -10,7 +17,7 @@ reload(GMKimMenuWidget)
 
 
 
-class GMKimTabWidget(QtGui.QWidget):
+class GMKimTabWidget(QWidget):
     def __init__(self, parent=None):
         super(GMKimTabWidget, self).__init__(parent)
         self.initUI()
@@ -18,8 +25,8 @@ class GMKimTabWidget(QtGui.QWidget):
 
     def initUI(self):
         # Create Widget
-        self.main_Layout = QtGui.QGridLayout()
-        self.tabs = QtGui.QTabWidget()
+        self.main_Layout = QGridLayout()
+        self.tabs = QTabWidget()
         
         self.bodyTab = GMKimBodyWidget.GMKimBodyWidget()
         self.faceTab = GMKimFaceWidget.GMKimFaceWidget()
@@ -41,7 +48,7 @@ class GMKimTabWidget(QtGui.QWidget):
      
 if __name__ == "__main__":
     import sys
-    app = QtGui.QApplication(sys.argv)
+    app = QApplication(sys.argv)
     ui = GMKimTabWidget()
     ui.show()
     sys.exit(app.exec_())

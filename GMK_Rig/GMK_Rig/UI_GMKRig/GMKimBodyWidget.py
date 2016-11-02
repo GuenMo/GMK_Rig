@@ -1,6 +1,14 @@
 # -*- coding: utf-8 -*-
 
-from PySide import QtGui, QtCore
+try:
+    from PySide.QtGui import *
+    from PySide.QtCore import *
+except:
+    from PySide2.QtGui import *
+    from PySide2.QtCore import *
+    from PySide2.QtWidgets import *
+
+    
 import pymel.core as pm
 import maya.mel as mel
 
@@ -91,7 +99,7 @@ reload(OutlineSet)
 
 import stylesheet
 
-class GMKimBodyWidget(QtGui.QWidget):
+class GMKimBodyWidget(QWidget):
     def __init__(self, parent=None):
         super(GMKimBodyWidget, self).__init__(parent)
         Utils.KGM_ImportMel()
@@ -103,66 +111,66 @@ class GMKimBodyWidget(QtGui.QWidget):
         # Create Widget
         
         self.iconPath = Utils.get_IconPath()
-        self.main_Layout = QtGui.QGridLayout()
+        self.main_Layout = QGridLayout()
         
         ## Import joint Guide
-        self.jg_GroupBox = QtGui.QGroupBox("Joint Guide")
-        self.jg_Layout  = QtGui.QGridLayout()
+        self.jg_GroupBox = QGroupBox("Joint Guide")
+        self.jg_Layout  = QGridLayout()
         
-        self.bipad_Button = QtGui.QPushButton()
+        self.bipad_Button = QPushButton()
         self.bipad_Button.setFixedSize(75,75)
         self.bipad_Button.setStyleSheet("QPushButton{ background-image: url(%s); }" % (self.iconPath+"bipad.png"))
         
-        self.quadruped_Button = QtGui.QPushButton()
+        self.quadruped_Button = QPushButton()
         self.quadruped_Button.setFixedSize(75,75)
         self.quadruped_Button.setStyleSheet("QPushButton{ background-image: url(%s); }" % (self.iconPath+"quadruped.png"))
         
-        self.bird_Button = QtGui.QPushButton()
+        self.bird_Button = QPushButton()
         self.bird_Button.setFixedSize(75,75)
         self.bird_Button.setStyleSheet("QPushButton{ background-image: url(%s); }" % (self.iconPath+"bird.png"))
         
         ## Rig
-        self.rig_GroupBox = QtGui.QGroupBox("Rig")
-        self.rig_Layout  = QtGui.QGridLayout()
+        self.rig_GroupBox = QGroupBox("Rig")
+        self.rig_Layout  = QGridLayout()
         
-        self.jgToJnt_Button = QtGui.QPushButton()
+        self.jgToJnt_Button = QPushButton()
         self.jgToJnt_Button.setFixedSize(75,75)
         self.jgToJnt_Button.setStyleSheet("QPushButton{ background-image: url(%s); }" % (self.iconPath+"jgToJnt.png"))
         
-        self.selJnt_Button = QtGui.QPushButton()
+        self.selJnt_Button = QPushButton()
         self.selJnt_Button.setFixedSize(75,75)
         self.selJnt_Button.setStyleSheet("QPushButton{ background-image: url(%s); }" % (self.iconPath+"selJnt.png"))
         
-        self.setup_Button = QtGui.QPushButton()
+        self.setup_Button = QPushButton()
         self.setup_Button.setFixedSize(75,75)
         self.setup_Button.setStyleSheet("QPushButton{ background-image: url(%s); }" % (self.iconPath+"bodySetup.png"))
         
         # skin utils
-        self.skin_GroupBox = QtGui.QGroupBox("Skin Utils")
-        self.skin_Layout = QtGui.QGridLayout()
+        self.skin_GroupBox = QGroupBox("Skin Utils")
+        self.skin_Layout = QGridLayout()
         
-        self.bindSkin_Button = QtGui.QPushButton()
-        self.paintSkin_Button = QtGui.QPushButton()
-        self.addSkin_Button = QtGui.QPushButton()
-        self.mirrorSkin_Button = QtGui.QPushButton()
-        self.copySkin_Button = QtGui.QPushButton()
-        self.oneQuarterSkin_Button = QtGui.QPushButton()
-        self.twoQuarterSkin_Button = QtGui.QPushButton()
-        self.treeQuarterSkin_Button = QtGui.QPushButton()
-        self.fourQuarterSkin_Button = QtGui.QPushButton()
-        self.zeroSkin_Button = QtGui.QPushButton()
+        self.bindSkin_Button = QPushButton()
+        self.paintSkin_Button = QPushButton()
+        self.addSkin_Button = QPushButton()
+        self.mirrorSkin_Button = QPushButton()
+        self.copySkin_Button = QPushButton()
+        self.oneQuarterSkin_Button = QPushButton()
+        self.twoQuarterSkin_Button = QPushButton()
+        self.treeQuarterSkin_Button = QPushButton()
+        self.fourQuarterSkin_Button = QPushButton()
+        self.zeroSkin_Button = QPushButton()
         
         # display joint
-        self.jntDisplay_GroupBox = QtGui.QGroupBox("Joint Display")
-        self.jntDisplay_Layout = QtGui.QGridLayout()
-        self.jntDisplay_SpinBox = QtGui.QSpinBox()
-        self.jntDisplay_Slider = QtGui.QSlider(QtCore.Qt.Horizontal)
+        self.jntDisplay_GroupBox = QGroupBox("Joint Display")
+        self.jntDisplay_Layout = QGridLayout()
+        self.jntDisplay_SpinBox = QSpinBox()
+        self.jntDisplay_Slider = QSlider(Qt.Horizontal)
         self.jntDisplay_SpinBox.setRange(1,100)
         self.jntDisplay_Slider.setRange(1,100)
         
         ## setup
-        #self.setup_Layout = QtGui.QGridLayout()
-        self.spacerItem = QtGui.QSpacerItem(20, 40, QtGui.QSizePolicy.Minimum, QtGui.QSizePolicy.Expanding)
+        #self.setup_Layout = QGridLayout()
+        self.spacerItem = QSpacerItem(20, 40, QSizePolicy.Minimum, QSizePolicy.Expanding)
         
         # Set Layout
         self.setLayout(self.main_Layout)
@@ -200,80 +208,80 @@ class GMKimBodyWidget(QtGui.QWidget):
         
         # Set Widget
         self.setWindowTitle("Custom Widget")
-        self.bindSkin_icon = QtGui.QPixmap(self.iconPath + "bindSkin.png")
-        self.paintSkin_icon = QtGui.QPixmap(self.iconPath + "paintSkin.png")
-        self.addSkin_icon = QtGui.QPixmap(self.iconPath + "addSkin.png")
-        self.mirrorSkin_icon = QtGui.QPixmap(self.iconPath + "mirrorSkin.png")
-        self.copySkin_icon = QtGui.QPixmap(self.iconPath + "copySkin.png")
-        self.oneQuarterSkin_icon = QtGui.QPixmap(self.iconPath + "oneQuarterSkin.png")
-        self.twoQuarterSkin_icon = QtGui.QPixmap(self.iconPath + "twoQuarterSkin.png")
-        self.treeQuarterSkin_icon = QtGui.QPixmap(self.iconPath + "treeQuarterSkin.png")
-        self.fourQuarterSkin_icon = QtGui.QPixmap(self.iconPath + "fourQuarterSkin.png")
-        self.zeroSkin_icon = QtGui.QPixmap(self.iconPath + "zeroSkin.png")
+        self.bindSkin_icon = QPixmap(self.iconPath + "bindSkin.png")
+        self.paintSkin_icon = QPixmap(self.iconPath + "paintSkin.png")
+        self.addSkin_icon = QPixmap(self.iconPath + "addSkin.png")
+        self.mirrorSkin_icon = QPixmap(self.iconPath + "mirrorSkin.png")
+        self.copySkin_icon = QPixmap(self.iconPath + "copySkin.png")
+        self.oneQuarterSkin_icon = QPixmap(self.iconPath + "oneQuarterSkin.png")
+        self.twoQuarterSkin_icon = QPixmap(self.iconPath + "twoQuarterSkin.png")
+        self.treeQuarterSkin_icon = QPixmap(self.iconPath + "treeQuarterSkin.png")
+        self.fourQuarterSkin_icon = QPixmap(self.iconPath + "fourQuarterSkin.png")
+        self.zeroSkin_icon = QPixmap(self.iconPath + "zeroSkin.png")
         
-        self.bindSkin_Button.setFixedSize(QtCore.QSize(36,36))
-        self.bindSkin_Button.setIconSize(QtCore.QSize(32,32))
+        self.bindSkin_Button.setFixedSize(QSize(36,36))
+        self.bindSkin_Button.setIconSize(QSize(32,32))
         self.bindSkin_Button.setIcon(self.bindSkin_icon)
         
-        self.paintSkin_Button.setFixedSize(QtCore.QSize(36,36))
-        self.paintSkin_Button.setIconSize(QtCore.QSize(32,32))
+        self.paintSkin_Button.setFixedSize(QSize(36,36))
+        self.paintSkin_Button.setIconSize(QSize(32,32))
         self.paintSkin_Button.setIcon(self.paintSkin_icon)
         
-        self.addSkin_Button.setFixedSize(QtCore.QSize(36,36))
-        self.addSkin_Button.setIconSize(QtCore.QSize(32,32))
+        self.addSkin_Button.setFixedSize(QSize(36,36))
+        self.addSkin_Button.setIconSize(QSize(32,32))
         self.addSkin_Button.setIcon(self.addSkin_icon)
         
-        self.mirrorSkin_Button.setFixedSize(QtCore.QSize(36,36))
-        self.mirrorSkin_Button.setIconSize(QtCore.QSize(32,32))
+        self.mirrorSkin_Button.setFixedSize(QSize(36,36))
+        self.mirrorSkin_Button.setIconSize(QSize(32,32))
         self.mirrorSkin_Button.setIcon(self.mirrorSkin_icon)
         
-        self.copySkin_Button.setFixedSize(QtCore.QSize(36,36))
-        self.copySkin_Button.setIconSize(QtCore.QSize(32,32))
+        self.copySkin_Button.setFixedSize(QSize(36,36))
+        self.copySkin_Button.setIconSize(QSize(32,32))
         self.copySkin_Button.setIcon(self.copySkin_icon)
         
-        self.oneQuarterSkin_Button.setFixedSize(QtCore.QSize(36,36))
-        self.oneQuarterSkin_Button.setIconSize(QtCore.QSize(32,32))
+        self.oneQuarterSkin_Button.setFixedSize(QSize(36,36))
+        self.oneQuarterSkin_Button.setIconSize(QSize(32,32))
         self.oneQuarterSkin_Button.setIcon(self.oneQuarterSkin_icon)
         
-        self.twoQuarterSkin_Button.setFixedSize(QtCore.QSize(36,36))
-        self.twoQuarterSkin_Button.setIconSize(QtCore.QSize(32,32))
+        self.twoQuarterSkin_Button.setFixedSize(QSize(36,36))
+        self.twoQuarterSkin_Button.setIconSize(QSize(32,32))
         self.twoQuarterSkin_Button.setIcon(self.twoQuarterSkin_icon)
         
-        self.treeQuarterSkin_Button.setFixedSize(QtCore.QSize(36,36))
-        self.treeQuarterSkin_Button.setIconSize(QtCore.QSize(32,32))
+        self.treeQuarterSkin_Button.setFixedSize(QSize(36,36))
+        self.treeQuarterSkin_Button.setIconSize(QSize(32,32))
         self.treeQuarterSkin_Button.setIcon(self.treeQuarterSkin_icon)
         
-        self.fourQuarterSkin_Button.setFixedSize(QtCore.QSize(36,36))
-        self.fourQuarterSkin_Button.setIconSize(QtCore.QSize(32,32))
+        self.fourQuarterSkin_Button.setFixedSize(QSize(36,36))
+        self.fourQuarterSkin_Button.setIconSize(QSize(32,32))
         self.fourQuarterSkin_Button.setIcon(self.fourQuarterSkin_icon)
         
-        self.zeroSkin_Button.setFixedSize(QtCore.QSize(36,36))
-        self.zeroSkin_Button.setIconSize(QtCore.QSize(32,32))
+        self.zeroSkin_Button.setFixedSize(QSize(36,36))
+        self.zeroSkin_Button.setIconSize(QSize(32,32))
         self.zeroSkin_Button.setIcon(self.zeroSkin_icon)
         
     def connectSignals(self):
-        self.connect( self.bipad_Button, QtCore.SIGNAL("released()")    , self.importBipad      )
-        self.connect( self.quadruped_Button, QtCore.SIGNAL("released()"), self.importQuadruped  )
-        self.connect( self.bird_Button, QtCore.SIGNAL("released()")     , self.importBird       )
-        self.connect( self.jgToJnt_Button, QtCore.SIGNAL("released()")  , self.convertJgToJnt   )
-        self.connect( self.selJnt_Button, QtCore.SIGNAL("released()")   , self.selectSkinJnt    )
-        self.connect( self.setup_Button, QtCore.SIGNAL("released()")    , self.setup)
+        self.connect( self.bipad_Button, SIGNAL("released()")    , self.importBipad      )
+        self.connect( self.quadruped_Button, SIGNAL("released()"), self.importQuadruped  )
+        self.connect( self.bird_Button, SIGNAL("released()")     , self.importBird       )
+        self.connect( self.jgToJnt_Button, SIGNAL("released()")  , self.convertJgToJnt   )
+        self.connect( self.selJnt_Button, SIGNAL("released()")   , self.selectSkinJnt    )
+        self.connect( self.setup_Button, SIGNAL("released()")    , self.setup)
         
-        self.connect( self.bindSkin_Button, QtCore.SIGNAL("released()") , self.bindSkin)
-        self.connect( self.paintSkin_Button, QtCore.SIGNAL("released()") , self.paintSkin)
-        self.connect( self.addSkin_Button, QtCore.SIGNAL("released()") , self.addSkin)
-        self.connect( self.mirrorSkin_Button, QtCore.SIGNAL("released()") , self.mirrorSkin)
-        self.connect( self.copySkin_Button, QtCore.SIGNAL("released()") , self.copySkin)
-        self.connect( self.oneQuarterSkin_Button, QtCore.SIGNAL("released()") , self.oneQuarterSkin)
-        self.connect( self.twoQuarterSkin_Button, QtCore.SIGNAL("released()") , self.twoQuarterSkin)
-        self.connect( self.treeQuarterSkin_Button, QtCore.SIGNAL("released()") , self.treeQuarterSkin)
-        self.connect( self.fourQuarterSkin_Button, QtCore.SIGNAL("released()") , self.fourQuarterSkin)
-        self.connect( self.zeroSkin_Button, QtCore.SIGNAL("released()") , self.zeroSkin)
+        self.connect( self.bindSkin_Button, SIGNAL("released()") , self.bindSkin)
+        self.connect( self.paintSkin_Button, SIGNAL("released()") , self.paintSkin)
+        self.connect( self.addSkin_Button, SIGNAL("released()") , self.addSkin)
+        self.connect( self.mirrorSkin_Button, SIGNAL("released()") , self.mirrorSkin)
+        self.connect( self.copySkin_Button, SIGNAL("released()") , self.copySkin)
+        self.connect( self.oneQuarterSkin_Button, SIGNAL("released()") , self.oneQuarterSkin)
+        self.connect( self.twoQuarterSkin_Button, SIGNAL("released()") , self.twoQuarterSkin)
+        self.connect( self.treeQuarterSkin_Button, SIGNAL("released()") , self.treeQuarterSkin)
+        self.connect( self.fourQuarterSkin_Button, SIGNAL("released()") , self.fourQuarterSkin)
+        self.connect( self.zeroSkin_Button, SIGNAL("released()") , self.zeroSkin)
         
-        self.connect( self.jntDisplay_Slider, QtCore.SIGNAL("valueChanged(int)"), self.jntDisplay_SpinBox, QtCore.SLOT("setValue(int)"))
-        self.connect( self.jntDisplay_SpinBox, QtCore.SIGNAL("valueChanged(int)"), self.jntDisplay_Slider, QtCore.SLOT("setValue(int)"))
-        self.connect( self.jntDisplay_Slider, QtCore.SIGNAL("valueChanged(int)"), self.jntDisplay)
-        self.connect( self.jntDisplay_SpinBox, QtCore.SIGNAL("valueChanged(int)"), self.jntDisplay)
+        self.connect( self.jntDisplay_Slider, SIGNAL("valueChanged(int)"), self.jntDisplay_SpinBox, SLOT("setValue(int)"))
+        self.connect( self.jntDisplay_SpinBox, SIGNAL("valueChanged(int)"), self.jntDisplay_Slider, SLOT("setValue(int)"))
+        self.connect( self.jntDisplay_Slider, SIGNAL("valueChanged(int)"), self.jntDisplay)
+        self.connect( self.jntDisplay_SpinBox, SIGNAL("valueChanged(int)"), self.jntDisplay)
         
     # Custom Function
     
@@ -295,7 +303,7 @@ class GMKimBodyWidget(QtGui.QWidget):
         
     def setup(self):
         self.stylData  = stylesheet.darkorange
-        pd = QtGui.QProgressDialog("Rigging in progress.",None, 0, 35)
+        pd = QProgressDialog("Rigging in progress.",None, 0, 35)
         pd.setStyleSheet(self.stylData)
         pd.show()
         
@@ -455,7 +463,7 @@ class GMKimBodyWidget(QtGui.QWidget):
         
 if __name__ == "__main__":
     import sys
-    app = QtGui.QApplication(sys.argv)
+    app = QApplication(sys.argv)
     ui = GMKimBodyWidget()
     ui.show()
     sys.exit(app.exec_())

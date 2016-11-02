@@ -1,6 +1,13 @@
 # -*- coding: utf-8 -*-
 
-from PySide import QtGui, QtCore
+try:
+    from PySide.QtGui import *
+    from PySide.QtCore import *
+except:
+    from PySide2.QtGui import *
+    from PySide2.QtCore import *
+    from PySide2.QtWidgets import *
+
 import os
 import pymel.core as pm
 import maya.cmds as cmds
@@ -15,7 +22,7 @@ reload(Eyebrow)
 reload(Eyelid)
 reload(Utils)
 
-class GMKimFaceWidget(QtGui.QWidget):
+class GMKimFaceWidget(QWidget):
     def __init__(self, parent=None):
         super(GMKimFaceWidget, self).__init__(parent)
         self.initUI()
@@ -24,64 +31,64 @@ class GMKimFaceWidget(QtGui.QWidget):
     def initUI(self):
         # Create Widget
         self.iconPath = Utils.get_IconPath()
-        self.eyebrow_icon = QtGui.QPixmap(self.iconPath + "eyebrow.png")
-        self.eyelid_icon = QtGui.QPixmap(self.iconPath + "eyelid.png")
-        self.lip_icon = QtGui.QPixmap(self.iconPath + "lip.png")
-        self.up_icon = QtGui.QPixmap(self.iconPath + "up.png")
-        self.dw_icon = QtGui.QPixmap(self.iconPath + "dw.png")
-        self.eyebrowLoc_icon = QtGui.QPixmap(self.iconPath + "eyebrowLoc.png")
-        self.eyelidLoc_icon = QtGui.QPixmap(self.iconPath + "eyelidLoc.png")
-        self.lipLoc_icon = QtGui.QPixmap(self.iconPath + "lipLoc.png")
+        self.eyebrow_icon = QPixmap(self.iconPath + "eyebrow.png")
+        self.eyelid_icon = QPixmap(self.iconPath + "eyelid.png")
+        self.lip_icon = QPixmap(self.iconPath + "lip.png")
+        self.up_icon = QPixmap(self.iconPath + "up.png")
+        self.dw_icon = QPixmap(self.iconPath + "dw.png")
+        self.eyebrowLoc_icon = QPixmap(self.iconPath + "eyebrowLoc.png")
+        self.eyelidLoc_icon = QPixmap(self.iconPath + "eyelidLoc.png")
+        self.lipLoc_icon = QPixmap(self.iconPath + "lipLoc.png")
         
-        self.main_Layout = QtGui.QGridLayout()
+        self.main_Layout = QGridLayout()
         
-        self.curve_GroupBox = QtGui.QGroupBox("Curve")
-        self.curve_Layout = QtGui.QGridLayout()
-        self.curveLabel = QtGui.QLabel("Select edge and check option")
-        self.side_GroupBox = QtGui.QGroupBox()
-        self.side_Layout = QtGui.QGridLayout()
-        self.up_RadioButton = QtGui.QRadioButton("Up")
-        self.dw_RadioButton = QtGui.QRadioButton("Down")
-        self.curvePart_GroupBox = QtGui.QGroupBox()
-        self.curvePart_Layout = QtGui.QGridLayout()
-        self.eyebrowCurve_RadioButton = QtGui.QRadioButton("Eyebrow")
-        self.eyelidCurve_RadioButton = QtGui.QRadioButton("Eyelid")
-        self.lipCurve_RadioButton = QtGui.QRadioButton("Lip")
-        self.curveBtn_Layout = QtGui.QGridLayout()
-        self.curve_Button = QtGui.QPushButton("Create")
-        self.curveMirror_Button = QtGui.QPushButton("Mirror")
-        self.curveDir_Button = QtGui.QPushButton("Reverse Direction")
+        self.curve_GroupBox = QGroupBox("Curve")
+        self.curve_Layout = QGridLayout()
+        self.curveLabel = QLabel("Select edge and check option")
+        self.side_GroupBox = QGroupBox()
+        self.side_Layout = QGridLayout()
+        self.up_RadioButton = QRadioButton("Up")
+        self.dw_RadioButton = QRadioButton("Down")
+        self.curvePart_GroupBox = QGroupBox()
+        self.curvePart_Layout = QGridLayout()
+        self.eyebrowCurve_RadioButton = QRadioButton("Eyebrow")
+        self.eyelidCurve_RadioButton = QRadioButton("Eyelid")
+        self.lipCurve_RadioButton = QRadioButton("Lip")
+        self.curveBtn_Layout = QGridLayout()
+        self.curve_Button = QPushButton("Create")
+        self.curveMirror_Button = QPushButton("Mirror")
+        self.curveDir_Button = QPushButton("Reverse Direction")
         
         
-        self.loc_GroupBox = QtGui.QGroupBox("Center Locator")
-        self.loc_Layout = QtGui.QGridLayout()
-        self.locPart_GroupBox = QtGui.QGroupBox()
-        self.locPart_Layout = QtGui.QGridLayout()
-        self.eyebrowLoc_RadioButton = QtGui.QRadioButton("Eyebrow")
-        self.eyelidLoc_RadioButton = QtGui.QRadioButton("Eyelid")
-        self.lipLoc_RadioButton = QtGui.QRadioButton("Lip")
-        self.loc_Button = QtGui.QPushButton("Create")
-        self.locMirror_Button = QtGui.QPushButton("Mirror")
+        self.loc_GroupBox = QGroupBox("Center Locator")
+        self.loc_Layout = QGridLayout()
+        self.locPart_GroupBox = QGroupBox()
+        self.locPart_Layout = QGridLayout()
+        self.eyebrowLoc_RadioButton = QRadioButton("Eyebrow")
+        self.eyelidLoc_RadioButton = QRadioButton("Eyelid")
+        self.lipLoc_RadioButton = QRadioButton("Lip")
+        self.loc_Button = QPushButton("Create")
+        self.locMirror_Button = QPushButton("Mirror")
         
-        self.guide_GroupBox = QtGui.QGroupBox("Guide Object")
-        self.guide_Layout = QtGui.QGridLayout() 
-        self.eyebrowLeftGudie_Label = QtGui.QLabel("Left Eyebrow")
-        self.eyebrowLeftGudie_LineEdit = QtGui.QLineEdit()
-        self.eyebrowLeftGudie_Button = QtGui.QPushButton("set")
-        self.eyebrowRightGudie_Label = QtGui.QLabel("Right Eyebrow")
-        self.eyebrowRightGudie_LineEdit = QtGui.QLineEdit()
-        self.eyebrowRightGudie_Button = QtGui.QPushButton("set")
-        self.eyelidLeftGudie_Label = QtGui.QLabel("Left Eyelid")
-        self.eyelidLeftGudie_LineEdit = QtGui.QLineEdit()
-        self.eyelidLeftGudie_Button = QtGui.QPushButton("set")
-        self.eyelidRightGudie_Label = QtGui.QLabel("Right Eyelid")
-        self.eyelidRightGudie_LineEdit = QtGui.QLineEdit()
-        self.eyelidRightGudie_Button = QtGui.QPushButton("set")
-        self.lipGudie_Label = QtGui.QLabel("Lip")
-        self.lipGudie_LineEdit = QtGui.QLineEdit()
-        self.lipGudie_Button = QtGui.QPushButton("set")
+        self.guide_GroupBox = QGroupBox("Guide Object")
+        self.guide_Layout = QGridLayout() 
+        self.eyebrowLeftGudie_Label = QLabel("Left Eyebrow")
+        self.eyebrowLeftGudie_LineEdit = QLineEdit()
+        self.eyebrowLeftGudie_Button = QPushButton("set")
+        self.eyebrowRightGudie_Label = QLabel("Right Eyebrow")
+        self.eyebrowRightGudie_LineEdit = QLineEdit()
+        self.eyebrowRightGudie_Button = QPushButton("set")
+        self.eyelidLeftGudie_Label = QLabel("Left Eyelid")
+        self.eyelidLeftGudie_LineEdit = QLineEdit()
+        self.eyelidLeftGudie_Button = QPushButton("set")
+        self.eyelidRightGudie_Label = QLabel("Right Eyelid")
+        self.eyelidRightGudie_LineEdit = QLineEdit()
+        self.eyelidRightGudie_Button = QPushButton("set")
+        self.lipGudie_Label = QLabel("Lip")
+        self.lipGudie_LineEdit = QLineEdit()
+        self.lipGudie_Button = QPushButton("set")
         
-        self.setup_Button = QtGui.QPushButton("Face Rigging")
+        self.setup_Button = QPushButton("Face Rigging")
         
         # Set Layout
         # set Guide
@@ -137,21 +144,21 @@ class GMKimFaceWidget(QtGui.QWidget):
         # Set Widget
         self.setWindowTitle("Custom Widget")
         self.eyebrowCurve_RadioButton.setIcon(self.eyebrow_icon)
-        self.eyebrowCurve_RadioButton.setIconSize(QtCore.QSize(35,20))
+        self.eyebrowCurve_RadioButton.setIconSize(QSize(35,20))
         self.eyelidCurve_RadioButton.setIcon(self.eyelid_icon)
-        self.eyelidCurve_RadioButton.setIconSize(QtCore.QSize(35,20))
+        self.eyelidCurve_RadioButton.setIconSize(QSize(35,20))
         self.lipCurve_RadioButton.setIcon(self.lip_icon)
-        self.lipCurve_RadioButton.setIconSize(QtCore.QSize(35,20))
+        self.lipCurve_RadioButton.setIconSize(QSize(35,20))
         
         self.up_RadioButton.setIcon(self.up_icon)
         self.dw_RadioButton.setIcon(self.dw_icon)
         
         self.eyebrowLoc_RadioButton.setIcon(self.eyebrowLoc_icon)
-        self.eyebrowLoc_RadioButton.setIconSize(QtCore.QSize(35,20))
+        self.eyebrowLoc_RadioButton.setIconSize(QSize(35,20))
         self.eyelidLoc_RadioButton.setIcon(self.eyelidLoc_icon)
-        self.eyelidLoc_RadioButton.setIconSize(QtCore.QSize(35,20))
+        self.eyelidLoc_RadioButton.setIconSize(QSize(35,20))
         self.lipLoc_RadioButton.setIcon(self.lipLoc_icon)
-        self.lipLoc_RadioButton.setIconSize(QtCore.QSize(35,20))
+        self.lipLoc_RadioButton.setIconSize(QSize(35,20))
         
         self.eyebrowCurve_RadioButton.setChecked(True)
         self.up_RadioButton.setChecked(True)
@@ -159,28 +166,28 @@ class GMKimFaceWidget(QtGui.QWidget):
         self.side_GroupBox.setDisabled(True)
         
     def connectSignals(self):
-        self.connect( self.eyebrowCurve_RadioButton, QtCore.SIGNAL("clicked()")   , self.checkCurvePart)
-        self.connect( self.eyelidCurve_RadioButton, QtCore.SIGNAL("clicked()")    , self.checkCurvePart)
-        self.connect( self.lipCurve_RadioButton, QtCore.SIGNAL("clicked()")       , self.checkCurvePart)
-        self.connect( self.up_RadioButton, QtCore.SIGNAL("clicked()")             , self.checkCurveSide)
-        self.connect( self.dw_RadioButton, QtCore.SIGNAL("clicked()")             , self.checkCurveSide)
-        self.connect( self.curve_Button, QtCore.SIGNAL("released()")              , self.createJntCurve)
-        self.connect( self.curveMirror_Button, QtCore.SIGNAL("released()")        , self.mirrorJntCurve)
-        self.connect( self.curveDir_Button,    QtCore.SIGNAL("released()")        , self.dirJntCurve   )
+        self.connect( self.eyebrowCurve_RadioButton, SIGNAL("clicked()")   , self.checkCurvePart)
+        self.connect( self.eyelidCurve_RadioButton, SIGNAL("clicked()")    , self.checkCurvePart)
+        self.connect( self.lipCurve_RadioButton, SIGNAL("clicked()")       , self.checkCurvePart)
+        self.connect( self.up_RadioButton, SIGNAL("clicked()")             , self.checkCurveSide)
+        self.connect( self.dw_RadioButton, SIGNAL("clicked()")             , self.checkCurveSide)
+        self.connect( self.curve_Button, SIGNAL("released()")              , self.createJntCurve)
+        self.connect( self.curveMirror_Button, SIGNAL("released()")        , self.mirrorJntCurve)
+        self.connect( self.curveDir_Button,    SIGNAL("released()")        , self.dirJntCurve   )
         
-        self.connect( self.eyebrowLoc_RadioButton, QtCore.SIGNAL("clicked()")     , self.checkLocPart  )
-        self.connect( self.eyelidLoc_RadioButton, QtCore.SIGNAL("clicked()")      , self.checkLocPart  )
-        self.connect( self.lipLoc_RadioButton, QtCore.SIGNAL("clicked()")         , self.checkLocPart  )
-        self.connect( self.loc_Button, QtCore.SIGNAL("clicked()")                 , self.createLoc     )
-        self.connect( self.locMirror_Button, QtCore.SIGNAL("clicked()")           , self.mirrorLoc     )
+        self.connect( self.eyebrowLoc_RadioButton, SIGNAL("clicked()")     , self.checkLocPart  )
+        self.connect( self.eyelidLoc_RadioButton, SIGNAL("clicked()")      , self.checkLocPart  )
+        self.connect( self.lipLoc_RadioButton, SIGNAL("clicked()")         , self.checkLocPart  )
+        self.connect( self.loc_Button, SIGNAL("clicked()")                 , self.createLoc     )
+        self.connect( self.locMirror_Button, SIGNAL("clicked()")           , self.mirrorLoc     )
         
-        self.connect( self.eyebrowLeftGudie_Button, QtCore.SIGNAL("clicked()")    , self.setLeftEyebrowGuide )
-        self.connect( self.eyebrowRightGudie_Button, QtCore.SIGNAL("clicked()")   , self.setRightEyebrowGuide)
-        self.connect( self.eyelidLeftGudie_Button, QtCore.SIGNAL("clicked()")     , self.setLeftEyelidGuide  )
-        self.connect( self.eyelidRightGudie_Button, QtCore.SIGNAL("clicked()")    , self.setRightEyelidGuide )
-        self.connect( self.lipGudie_Button, QtCore.SIGNAL("clicked()")            , self.setLipGuide         )
+        self.connect( self.eyebrowLeftGudie_Button, SIGNAL("clicked()")    , self.setLeftEyebrowGuide )
+        self.connect( self.eyebrowRightGudie_Button, SIGNAL("clicked()")   , self.setRightEyebrowGuide)
+        self.connect( self.eyelidLeftGudie_Button, SIGNAL("clicked()")     , self.setLeftEyelidGuide  )
+        self.connect( self.eyelidRightGudie_Button, SIGNAL("clicked()")    , self.setRightEyelidGuide )
+        self.connect( self.lipGudie_Button, SIGNAL("clicked()")            , self.setLipGuide         )
         
-        self.connect( self.setup_Button, QtCore.SIGNAL("clicked()")               , self.setup         )
+        self.connect( self.setup_Button, SIGNAL("clicked()")               , self.setup         )
         
     # Custom Function
     ## UI Fuctions
@@ -542,7 +549,7 @@ class GMKimFaceWidget(QtGui.QWidget):
         
     def setup(self):
         if self.checkRigItem():
-            pd = QtGui.QProgressDialog("Rigging in progress.",None, 0, 20)
+            pd = QProgressDialog("Rigging in progress.",None, 0, 20)
             pd.show()
             
             LipRig = Lip.GMKimLip("LipCenterLoc", "UpLipJntCrv", "DwLipJntCrv", self.lipGudie_LineEdit.text(), 10)
@@ -590,7 +597,7 @@ class GMKimFaceWidget(QtGui.QWidget):
                 
 if __name__ == "__main__":
     import sys
-    app = QtGui.QApplication(sys.argv)
+    app = QApplication(sys.argv)
     ui = GMKimFaceWidget()
     ui.show()
     sys.exit(app.exec_())
